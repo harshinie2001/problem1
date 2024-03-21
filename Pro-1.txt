@@ -1,0 +1,69 @@
+Example -1
+Using nested loops:
+
+def virus_indices(num_cases, cases):
+    def is_match(s1, s2):
+        if len(s1) != len(s2):
+            return False
+        
+        mismatches = 0
+        for i in range(len(s1)):
+            if s1[i] != s2[i]:
+                mismatches += 1
+                if mismatches > 1:
+                    return False
+        return True
+
+    for case in cases:
+        patient_dna, virus_dna = case.split()
+        match_indices = []
+        
+        for i in range(len(patient_dna) - len(virus_dna) + 1):
+            substring = patient_dna[i:i+len(virus_dna)]
+            if substring == virus_dna or is_match(substring, virus_dna):
+                match_indices.append(str(i))
+        
+        if match_indices:
+            print(" ".join(match_indices))
+        else:
+            print("No Match!")
+
+# Sample Input
+num_cases = 3
+cases = [
+    "abbab ba",
+    "hello world",
+    "banana nan"
+]
+
+# Sample Output
+virus_indices(num_cases, cases)
+
+Example-2
+
+Using regular expressions:
+
+import re
+
+def virus_indices(num_cases, cases):
+    for case in cases:
+        patient_dna, virus_dna = case.split()
+        pattern = f'({virus_dna}|[^{virus_dna}]{virus_dna}|{virus_dna}[^{virus_dna}])'
+        match_indices = [str(match.start()) for match in re.finditer(pattern, patient_dna)]
+        
+        if match_indices:
+            print(" ".join(match_indices))
+        else:
+            print("No Match!")
+
+# Sample Input
+num_cases = 3
+cases = [
+    "abbab ba",
+    "hello world",
+    "banana nan"
+]
+
+# Sample Output
+virus_indices(num_cases, cases)
+
